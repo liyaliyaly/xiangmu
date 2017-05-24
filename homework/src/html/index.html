@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        .box{
+            width: 1200px;
+            height: 800px;
+        }
+        .header{
+            background:lightskyblue;
+            color: #fff;
+            line-height: 40px;
+            position: relative;
+        }
+        .lt{
+            width: 100px;
+            height: 500px;
+            border-right: 3px solid #eee;
+            line-height: 40px;
+            text-align: center;
+            float:left;
+        }
+        .lt p{
+            border-bottom: 1px solid #eee;
+        }
+        ul li a{
+            text-decoration: none;
+        }
+        .rt{
+            float:left;
+            width: 1000px;
+            height: 500px;
+            position: relative;
+        }
+        .rt .header .options{
+            position: absolute;
+            right: 10px;
+        }
+        p{
+            line-height:40px;
+            border-bottom:1px solid #eee ;
+        }
+        a{
+            text-decoration: none;
+        }
+        .change .list{
+            display: inline-block;
+        }
+        .change .list li{
+            float: left;
+            width: 30px;
+            border:1px solid #eee;
+            text-align: center;
+            margin-right: 5px;
+        }
+        .change .list .on{
+            background: red;
+        }
+        .change .list .out{
+            background: #fff;
+        }
+        .sou{
+            display: inline-block;
+            width: 100px;
+        }
+        .sou input{
+            width: 40px;
+        }
+        table{
+            border-collapse: collapse;
+            width: 1000px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        table td{
+            border-top:1px solid #eee;
+            height: 40px;
+        }
+        tbody{
+            color:#aaaaaa;
+        }
+        .cls{
+            width:300px;
+            height: 420px;
+            background: lightskyblue;
+            border-radius: 12px;
+            position: absolute;
+            top:180px;
+            left:420px;
+        }
+        .cls span{
+            display:inline-block;
+            width: 100px;
+            text-align: center;
+        }
+        .cls button{
+            width:100px;
+            line-height: 35px;
+            text-align: center;
+            border:none;
+            margin-left: 40px;
+        }
+        .addrole{
+            width:450px;
+            height: 500px;
+            background: pink;
+            border-radius: 12px;
+            margin: 50px auto;
+        }
+        .addrole span{
+            display:inline-block;
+            width: 150px;
+            text-align: center;
+        }
+        .addrole button{
+            width:200px;
+            line-height: 35px;
+            text-align: center;
+            border:none;
+            margin-left: 120px;
+        }
+    </style>
+</head>
+<body ng-app="myapp">
+    <div ng-controller="fs" class="box">
+        <div class="lt">
+            <p class="header">通用权限系统</p>
+            <p>我的工作台</p>
+            <p ng-click="click()">权限管理</p>
+            <ul ng-show="flag">
+                <li ng-repeat="item in navdata" ui-sref="{{item.page}}"><a href="#">{{item.name}}</a></li>
+            </ul>
+        </div>
+        <div class="rt">
+            <p class="header">
+                <span ui-sref="list">个人中心</span>
+                <span>系统设置</span>
+                <span class="options">选项</span>
+            </p>
+            <div ui-view class="con"></div>
+        </div>
+    </div>
+</body>
+<script src="../js/common/angular.js"></script>
+<script src="../js/common/jquery.js"></script>
+<script src="../js/common/angular-ui-router.js"></script>
+<script>
+        var app=angular.module('myapp',['ui.router']);
+        app.controller('fs',function($scope,alldata){
+            $scope.navdata=alldata.navdata;
+            $scope.tabdata=alldata.tabdata;
+            $scope.tabcon=alldata. thirdata;
+            $scope.partdata=alldata.fourdata;
+            $scope.statedata=alldata. statedata;
+            $scope.flag=false;
+            $scope.click=function(){
+                $scope.flag=!$scope.flag
+            }
+            $scope.$on('senddata',function(e,d){
+               $scope.tabcon.push(d.newdata);
+             })
+
+
+        })
+        app.config(function($stateProvider){
+            $stateProvider
+                .state({
+                    name:'configs',
+                    url:"/configs",
+                    templateUrl:"configs.html",
+                    controller:function($scope){
+                        $scope.search=function(){
+                            $scope.val=$scope.text;
+                            $scope.part=$scope.selectedpart;
+                            $scope.state=$scope.selectedstate;
+                        }
+                        //分页
+                        $scope.cur=$scope.tabcon.length
+                        console.log($scope.cur);
+                            $scope.arr=[]
+                            for(var i=1;i<=$scope.cur;i++){
+                                $scope.arr.push(i);
+                            }
+
+                            $scope.ck=function(i){
+                                $('.list li').eq(i).addClass('on').siblings().removeClass('on');
+                                $scope.a=$scope.tabcon[i];
+                                $scope.prev=function(){
+                                    i-=1;
+                                    $scope.a=$scope.tabcon[i];
+                                    $('.list li').eq(i).addClass('on').siblings().removeClass('on');
+                                }
+                                $scope.next=function(){
+                                    i+=1;
+                                    $scope.a=$scope.tabcon[i];
+                                    $('.list li').eq(i).addClass('on').siblings().removeClass('on');
+                                }
+                            }
+                        $scope.blur=function(){
+                            var value=Number($('.page').val())-1;
+                                    $scope.a=$scope.tabcon[value];
+                                    $('.list li').eq(value).addClass('on').siblings().removeClass('on');
+                        }
+                        //删除
+                        $scope.remove=function(sh){
+                            $scope.tabcon.forEach(function(v,i){
+                                if(v.ID==sh){
+                                    $scope.tabcon.splice(i,1);
+                                    $scope.cur=$('tbody tr').length-1;
+                                    console.log($scope.cur);
+                                    $scope.arr=[];
+                                    for(var i=1;i<=$scope.cur;i++){
+                                        $scope.arr.push(i);
+                                    }
+                                }
+                            })
+                        }
+                        //修改
+                        $scope.bol=false;
+                        $scope.alter=function(index){
+                            $scope.bol=true;
+                            $scope.tar={};
+                            $scope.tabcon.forEach(function (v,i) {
+                                for(k in v){
+                                    if(index== v.ID){
+                                        $scope.tar[k]=v[k]
+                                    }
+                                }
+                            })
+                            console.log($scope.tar)
+                        }
+                        $scope.sure=function(){
+                            $scope.bol=false;
+                            $scope.tabcon.forEach(function (v,i) {
+                                if(v.ID==$scope.tar.ID){
+                                    $scope.tabcon[i]=$scope.tar;
+                                }
+                            })
+                        }
+                        $scope.fal=function(){
+                            $scope.bol=false;
+                        }
+                    },
+            })
+                 .state({
+                        name:"roles",
+                        url:"/roles",
+                        templateUrl:"roles.html",
+                        controller:function($scope){
+                            var num=8;
+                            $scope.add=function(){
+                               $scope.arr.ID=++num;
+                               $scope.$emit('senddata',{
+                                   newdata:$scope.arr
+                               })
+                            }
+                        }
+
+                    })
+        })
+        app.service('alldata',function() {
+            return {
+                fstdata: [
+                    {
+                        id: 1,
+                        name: '个人中心',
+                        nickname: '账户管理'
+                    },
+                    {
+                        id: 2,
+                        name: '系统设置',
+                        nickname: '权限管理'
+                    }
+                ],
+                secdata: [
+                    {
+                        id: 11,
+                        parentid: 1,
+                        name: '个人信息',
+                        page: 'grxx.html'
+                    },
+                    {
+                        id: 12,
+                        parentid: 1,
+                        name: '修改密码',
+                        page: 'xgmm.html'
+                    },
+                    {
+                        id: 21,
+                        parentid: 2,
+                        name: '功能配置',
+                        page: 'gnpz.html'
+                    },
+                    {
+                        id: 22,
+                        parentid: 2,
+                        name: '角色管理',
+                        page: 'jsgl.html'
+                    },
+                    {
+                        id: 23,
+                        parentid: 2,
+                        name: '用户管理',
+                        page: 'yhgl.html'
+                    }
+                ],
+                navdata: [
+                    {
+                        id: 121,
+                        name: '功能配置',
+                        page: 'configs'
+                    },
+                    {
+                        id: 122,
+                        name: '角色管理',
+                        page: 'roles'
+                    },
+                    {
+                        id: 123,
+                        name: '用户管理',
+                        page: 'configs'
+                    }
+                ],
+                tabdata: [
+                    {
+                        name: "ID"
+                    },
+                    {
+                        name: "登录名"
+                    },
+                    {
+                        name: "真实姓名"
+                    },
+                    {
+                        name: "角色"
+                    },
+                    {
+                        name: "手机"
+                    },
+                    {
+                        name: "邮箱"
+                    },
+                    {
+                        name: "状态"
+                    },
+                    {
+                        name: "创建时间"
+                    },
+                    {
+                        name: "操作"
+                    }
+                ],
+                thirdata: [
+                    {
+                        ID: 1,
+                        parentid: 23,
+                        loginname: 'zhangsan',
+                        name: '张三',
+                        role: '13管理员aaa',
+                        telephone: '15098950322',
+                        email: '837990335@qq.com',
+                        state: '启用',
+                        creattime: '2014-07-27 16:56'
+                    },
+                    {
+                        ID: 2,
+                        parentid: 23,
+                        loginname: 'lisi',
+                        name: '李四',
+                        role: '13管理员aaa',
+                        telephone: '15098950322',
+                        email: '837990335@qq.com',
+                        state: '禁用',
+                        creattime: '2014-07-27 16:56'
+                    },
+                    {
+                        ID: 3,
+                        parentid: 23,
+                        loginname: 'wangwu',
+                        name: '王五',
+                        role: '13管理员aaa',
+                        telephone: '15098950322',
+                        email: '837990335@qq.com',
+                        state: '启用',
+                        creattime: '2014-07-27 16:56'
+                    },
+                    {
+                        ID: 4,
+                        parentid: 23,
+                        loginname: 'zhangchen',
+                        name: '张晨',
+                        role: '13管理员aaa',
+                        telephone: '15098950322',
+                        email: '837990335@qq.com',
+                        state: '启用',
+                        creattime: '2014-07-27 16:56'
+                    },
+                    {
+                        ID: 5,
+                        parentid: 23,
+                        loginname: 'liucheng',
+                        name: '刘成',
+                        role: '管理员',
+                        telephone: '15098950322',
+                        email: '837990335@qq.com',
+                        state: '禁用',
+                        creattime: '2014-07-27 16:56'
+                    },
+                    {
+                        ID: 6,
+                        parentid: 23,
+                        loginname: 'liji',
+                        name: '李继',
+                        role: '13管理员aaa',
+                        telephone: '15098950322',
+                        email: '837990335@qq.com',
+                        state: '禁用',
+                        creattime: '2014-07-27 16:56'
+                    },
+                    {
+                        ID: 7,
+                        parentid: 23,
+                        loginname: 'yuantao',
+                        name: '袁涛',
+                        role: '13管理',
+                        telephone: '15098950322',
+                        email: '837990335@qq.com',
+                        state: '启用',
+                        creattime: '2014-07-27 16:56'
+                    },
+                    {
+                        ID: 8,
+                        parentid: 23,
+                        loginname: 'wangjian',
+                        name: '王建',
+                        role: '管理员',
+                        telephone: '15098950322',
+                        email: '837990335@qq.com',
+                        state: '禁用',
+                        creattime: '2014-07-27 16:56'
+                    }
+                ],
+                fourdata: [
+                    {
+                        ID: 1,
+                        role: "管理员",
+                        state: "启用",
+                        orders: 0,
+                        creattime: '2014-07-27 16:35'
+                    },
+                    {
+                        ID: 2,
+                        role: "管理员2",
+                        state: "禁用",
+                        orders: 2,
+                        creattime: '2014-07-27 16:35'
+                    },
+                    {
+                        ID: 3,
+                        role: "管理员",
+                        state: "禁用",
+                        orders: 5,
+                        creattime: '2014-07-27 16:35'
+                    },
+                    {
+                        ID: 4,
+                        role: "管理员2",
+                        state: "启用",
+                        orders: 0,
+                        creattime: '2014-07-27 16:35'
+                    },
+                    {
+                        ID: 5,
+                        role: "管理员0",
+                        state: "启用",
+                        orders: 2,
+                        creattime: '2014-07-27 16:35'
+                    },
+                    {
+                        ID: 6,
+                        role: "管理员1",
+                        state: "禁用",
+                        orders: 0,
+                        creattime: '2014-07-27 16:35'
+                    },
+                    {
+                        ID: 7,
+                        role: "管理员是",
+                        state: "启用",
+                        orders: 0,
+                        creattime: '2014-07-27 16:35'
+                    },
+                    {
+                        ID: 8,
+                        role: "管理员0",
+                        state: "启用",
+                        orders: 1,
+                        creattime: '2014-07-27 16:35'
+                    },
+                    {
+                        ID: 9,
+                        role: "管理员2",
+                        state: "启用",
+                        orders: 0,
+                        creattime: '2014-07-27 16:35'
+                    },
+                    {
+                        ID: 10,
+                        role: "管理2",
+                        state: "启用",
+                        orders: 0,
+                        creattime: '2014-07-27 16:35'
+                    },
+                    {
+                        ID: 11,
+                        role: "管理员2",
+                        state: "禁用",
+                        orders: 0,
+                        creattime: '2014-07-27 16:35'
+                    }
+
+                ],
+                statedata:[
+                    {
+                        state:"启用"
+                    },
+                    {
+                        state:"禁用"
+                    }
+                ]
+            }
+        })
+
+</script>
+</html>
