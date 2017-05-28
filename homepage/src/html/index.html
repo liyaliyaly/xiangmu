@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="myapp">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+            list-style: none;
+        }
+        .header{
+            background:lightskyblue;
+            color: #fff;
+            width: 1400px;
+            height: 40px;
+        }
+        .header p{
+            float: left;
+            width: 150px;
+            line-height: 40px;
+            font-size: 18px;
+            border-bottom: 1px solid #eee;
+            border-right: 1px solid #eee;
+            text-align: center;
+        }
+        .header ul{
+            width: 1000px;
+            float: left;
+            margin-left:20px;
+        }
+        .header ul li{
+            margin-right: 20px;
+            float: left;
+            line-height: 40px;
+
+        }
+        ul li a{
+            text-decoration: none;
+        }
+        .bot{
+            width: 1400px;
+            height: 800px;
+            clear: both;
+        }
+       .bot  .navside{
+            width: 150px;
+           height: 800px;
+           float: left;
+        }
+        .navside #mainMenu{
+            height:800px;
+            border-right: 1px solid #eee;
+            text-align: center;
+        }
+        #mainMenu h3{
+            font-size:16px;
+            line-height: 40px;
+            color: lightseagreen;
+            box-shadow: 0  3px 0 #eee;
+
+        }
+        #mainMenu dl dt{
+            line-height: 40px;
+            font-weight: 800;
+            border-bottom:1px solid #eee;
+        }
+        #mainMenu dd ul li{
+            line-height: 40px;
+        }
+       .bot  .con{
+            width: 1000px;
+            height: 800px;
+            float:left;
+           position: relative;
+        }
+        .con p{
+            line-height:40px;
+            border-bottom:1px solid #eee ;
+        }
+        .change .list{
+            display: inline-block;
+        }
+        .change .list .like{
+            display: inline-block;
+            width: 30px;
+            border:1px solid #eee;
+            text-align: center;
+            margin-right: 5px;
+        }
+        .change .list .spans{
+            display: inline-block;
+            border:1px solid #eee;
+            text-align: center;
+            margin-right: 5px;
+        }
+        .change .list .on{
+            background: red;
+        }
+        table{
+            border-collapse: collapse;
+            width: 1000px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        table td{
+            border-top:1px solid #eee;
+            height: 40px;
+        }
+        tbody{
+            color:#aaaaaa;
+        }
+        .cls{
+            width:300px;
+            height: 420px;
+            background: lightskyblue;
+            border-radius: 12px;
+            position: absolute;
+            top:180px;
+            left:420px;
+        }
+        .cls span{
+            display:inline-block;
+            width: 100px;
+            text-align: center;
+        }
+        .cls button{
+            width:100px;
+            line-height: 35px;
+            text-align: center;
+            border:none;
+            margin-left: 40px;
+        }
+        .con .confirmsquare {
+            width: 300px;
+            height: 120px;
+            background: lightblue;
+            position: absolute;
+            top:200px;
+            right: 500px;
+        }
+        .quare{
+            line-height: 40px;
+            text-align: center;
+            position: relative;
+        }
+        .fsure{
+            color: #fff;
+        } 
+        .fr{
+            position: absolute;
+            right: 20px;
+        }
+        .que{
+            line-height: 40px;
+            padding-left: 40px;
+            display: block;
+        }
+        .confirmsquare .btn{
+            display: inline-block;
+            width: 40px;
+            margin-left: 80px;
+        }
+        .addrole{
+            width:450px;
+            height: 500px;
+            background: pink;
+            border-radius: 12px;
+            margin: 50px auto;
+        }
+        .addrole span{
+            display:inline-block;
+            width: 150px;
+            text-align: center;
+        }
+        .addrole button{
+            width:200px;
+            line-height: 35px;
+            text-align: center;
+            border:none;
+            margin-left: 120px;
+        }
+    </style>
+</head>
+<body>
+    <headers></headers>
+    <div ui-view class="bot"></div>
+</body>
+<script src="../js/common/angular.js"></script>
+<script src="../js/common/angular-ui-router.js"></script>
+<script src="../js/common/jquery.js"></script>
+<script>
+    var app=angular.module('myapp',['ui.router']);
+</script>
+<script src="../../data/data.js"></script>
+<script src="../js/service.js"></script>
+<script src="../js/index.js"></script>
+
+</html>

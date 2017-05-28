@@ -1,0 +1,6 @@
+<div class="header">
+    <p>通用权限系统</p>
+    <ul>
+        <li ng-repeat="item in data" ui-sref="{{item.route}}({self:item})"><a href="#">{{item.name}}</a></li>
+    </ul>
+</div>

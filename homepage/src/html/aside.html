@@ -1,0 +1,22 @@
+
+<div class="navside">
+    <div id="mainMenu" class="main-menu">
+        <h3>我的工作台</h3>
+        <div>
+            <dl>
+                <dt ng-click="statueConFn()">
+                    {{parentName}}
+                </dt>
+                <dd ng-hide="statueCon">
+                    <ul>
+                        <li ng-repeat="i in data">
+                            <a ui-sref="{{i.route}}({id:i.id})">{{i.name}} </a>
+                        </li>
+                    </ul>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+<div ui-view class="con">
+</div>
